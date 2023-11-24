@@ -1,0 +1,19 @@
+.profile__pic {
+    margin: 0;
+    padding: 0;
+    max-width: 120px;
+    max-height: 120px;
+}
+
+@media screen and (max-width: 770px) {
+    .profile__pic {
+        max-width: 85px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 560px) {
+    .profile__pic {
+        max-width: 120px;
+        margin: 0 auto;
+    }
+}
