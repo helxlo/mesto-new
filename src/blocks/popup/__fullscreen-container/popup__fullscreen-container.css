@@ -1,0 +1,7 @@
+.popup__fullscreen-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: center;
+}

@@ -1,0 +1,4 @@
+.popup__error {
+    display: inline-block;
+    min-height: 30px;
+}

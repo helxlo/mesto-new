@@ -1,0 +1,21 @@
+.popup__closebutton_type_fullscreen {
+    position: absolute;
+    top: 44px;
+    right: 395px;
+}
+
+@media screen and (max-width: 770px) {
+.popup__closebutton_type_fullscreen {
+    position: absolute;
+    top: 89px;
+    right: 395px;
+}
+}
+
+@media screen and (min-width: 320px) and (max-width: 560px) {
+.popup__closebutton_type_fullscreen {
+    position: absolute;
+    top: 149px;
+    right: 236px;
+}
+}

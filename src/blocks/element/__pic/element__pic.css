@@ -1,0 +1,29 @@
+.element__pic {
+    max-width: 282px;
+    height: 282px;
+    background: #C4C4C4;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+}
+
+.element__pic:hover {
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 990px) {
+    .element__pic {
+        max-width: 230px;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .element__pic {
+        max-width: 235px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 560px) {
+    .element__pic {
+        max-width: 282px;
+    }
+}

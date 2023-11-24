@@ -1,0 +1,23 @@
+.element__trash {
+    position: absolute;
+    background: none;
+    border: none;
+    background-image: url(../../../images/trashButton.svg);
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 19px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    transform: translate(244px, 20px);
+}
+
+.element__trash:hover {
+    opacity: 0.6;
+}
+
+@media screen and (min-width: 560px) and (max-width: 990px) {
+    .element__trash {
+        transform: translate(200px, 20px);
+    }
+}
