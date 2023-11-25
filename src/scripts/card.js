@@ -1,12 +1,11 @@
 import { openModal } from "./modal.js"
 import { popupFullScreen, subtitleFullScreen, picFullScreen } from "../index.js";
 
-const elementTemplate = document.querySelector('#element').content;
-
 function createCard(name, link) {
+    const elementTemplate = document.querySelector('#element').content;
     const card = elementTemplate.querySelector('.element').cloneNode(true);
     card.querySelector('.element__title').textContent = name;
-    const cardPic = card.querySelectior('.element__pic')
+    const cardPic = card.querySelector('.element__pic')
     cardPic.src = link;
     cardPic.alt = name;
 
