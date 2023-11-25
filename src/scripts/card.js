@@ -6,7 +6,7 @@ const elementTemplate = document.querySelector('#element').content;
 function createCard(name, link) {
     const card = elementTemplate.querySelector('.element').cloneNode(true);
     card.querySelector('.element__title').textContent = name;
-    const cardPic = card.querySelector('.element__pic')
+    const cardPic = card.querySelectior('.element__pic')
     cardPic.src = link;
     cardPic.alt = name;
 
@@ -16,8 +16,7 @@ function createCard(name, link) {
     const trash = card.querySelector('.element__trash');
     trash.addEventListener('click', () => trash.closest('.element').remove())
 
-    const pic = card.querySelector('.element__pic');
-    pic.addEventListener('click', function () {
+    cardPic.addEventListener('click', function () {
         openModal(popupFullScreen);
         picFullScreen.src = link;
         subtitleFullScreen.textContent = name
