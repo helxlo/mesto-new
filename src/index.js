@@ -33,7 +33,7 @@ initialCards.forEach((element) => {
   cardsSection.append(cardItem);
 }) //функция добавления карточек из массива на страничку
 
-function openFormButton() {
+function openProfilePopup() {
   nameInput.value = title.textContent;
   jobInput.value = subtitle.textContent;
 
@@ -62,7 +62,7 @@ function submitAddForm(evt) {
 
 //функции --^
 
-popupProfileEditButton.addEventListener('click', openFormButton);
+popupProfileEditButton.addEventListener('click', openProfilePopup);
 formProfileElement.addEventListener('submit', submitEditForm);
 
 popupProfileAddButton.addEventListener('click', () => openModal(popupAdd));
