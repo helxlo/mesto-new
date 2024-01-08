@@ -1,13 +1,18 @@
 .profile__pic {
     margin: 0;
     padding: 0;
-    max-width: 120px;
-    max-height: 120px;
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    border: none;
+    z-index: 1;
+    background-position: center;
 }
 
 @media screen and (max-width: 770px) {
     .profile__pic {
-        max-width: 85px;
+        width: 85px;
+        height: 85px;
     }
 }
 

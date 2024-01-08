@@ -1,4 +1,5 @@
 .element__trash {
+    visibility: hidden;
     position: absolute;
     background: none;
     border: none;
