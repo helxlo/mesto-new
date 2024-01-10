@@ -1,5 +1,5 @@
 import { openModal, closeModal } from "./modal.js"
-import { popupFullScreen, subtitleFullScreen, picFullScreen, popupDeleteForm } from "../index.js";
+import { popupFullScreen, subtitleFullScreen, picFullScreen, popupDeleteForm } from "../pages/index.js";
 import { deleteCard, putLikeOnCard, deleteLikeOnCard } from "./api.js";
 
 const popupAreYouSure = document.querySelector('.popup_type_areyousure')

@@ -1,21 +1,25 @@
-import './pages/index.css';
-import { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, patchProfileAvatar } from './scripts/api.js'
-import { createCard } from './scripts/card.js'
-import { openModal, closeModal } from './scripts/modal.js'
-import { enableValidation } from './scripts/validate.js'
+import './index.css';
+import { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, patchProfileAvatar } from '../scripts/api.js'
+import { createCard } from '../scripts/card.js'
+import { openModal, closeModal } from '../scripts/modal.js'
+import { enableValidation } from '../scripts/validate.js'
+
+const handleCatch = (err) => {
+  console.log(err)
+}
 
 const popups = document.querySelectorAll('.popup')
 
-export const title = document.querySelector('.profile__name') //имя
-export const subtitle = document.querySelector('.profile__description') //деятельность
-export const pic = document.querySelector('.profile__pic-zone') //аватарка
+export const profileName = document.querySelector('.profile__name') //имя
+export const profileDescription = document.querySelector('.profile__description') //деятельность
+export const profilePic = document.querySelector('.profile__pic-zone') //аватарка
 export const picAvatar = document.querySelector('.profile__pic')
 
 const popupProfileEditButton = document.querySelector('.profile__editbutton') //кнопка редактирования
 export const popupEdit = document.querySelector('.popup_type_edit') //попап редактирования
 const formProfileElement = document.forms["edit-form"] //форма попапа редактирования
 export const nameInput = formProfileElement.querySelector('.popup__input_type_name') //строка ввода имени
-export const jobInput = formProfileElement.querySelector('.popup__input_type_job') //строка ввода деятельности
+export const descriptionInput = formProfileElement.querySelector('.popup__input_type_job') //строка ввода деятельности
 
 const saveButtons = document.querySelectorAll('.popup__savebutton')
 
@@ -39,8 +43,8 @@ export const popupDeleteForm = document.forms["delete-form"]
 //константы-^
 
 function openProfilePopup() {
-  nameInput.value = title.textContent;
-  jobInput.value = subtitle.textContent;
+  nameInput.value = profileName.textContent;
+  descriptionInput.value = profileDescription.textContent;
 
   openModal(popupEdit)
 }
@@ -51,13 +55,13 @@ function submitEditForm(evt) {
 
   renderLoading(true)
 
-  title.textContent = nameInput.value
-  subtitle.textContent = jobInput.value
-
-  patchProfileInfo(nameInput.value, jobInput.value)
+  patchProfileInfo(nameInput.value, descriptionInput.value)
     .then(() => {
+      profileName.textContent = nameInput.value
+      profileDescription.textContent = descriptionInput.value
       closeModal(popupEdit)
     })
+    .catch(handleCatch)
     .finally(() => {
       renderLoading(false)
     })
@@ -76,12 +80,12 @@ function submitAddForm(evt) {
     .then(item => {
       const newCard = createCard(item.name, item.link, item.owner, item._id, item.likes);
       cardsSection.prepend(newCard);
+      closeModal(popupAdd);
     })
+    .catch(handleCatch)
     .finally(() => {
       renderLoading(false)
     })
-
-  closeModal(popupAdd);
   popupAddForm.reset();
 
 }; //функция создания новой карточки 
@@ -98,6 +102,7 @@ function submitNewAvatar(evt) {
       closeModal(popupAvatar)
       popupAvatarForm.reset()
     })
+    .catch(handleCatch)
     .finally(() => {
       renderLoading(false)
     })
@@ -131,17 +136,19 @@ function renderLoading(isLoading) {
 function getProfileData() {
   getProfileInfo()
     .then((result) => {
-      title.textContent = result.name
-      subtitle.textContent = result.about
+      profileName.textContent = result.name
+      profileDescription.textContent = result.about
       picAvatar.style.background = `url(${result.avatar})`
     })
+    .catch(handleCatch)
 }
 getProfileData()
 
 //
 
 function getCards() {
-  getInitialCards()
+  Promise.all([getProfileData(), getInitialCards()])
+ getInitialCards()
     .then((result) => {
       const arr = Array.from(result)
       arr.forEach((item) => {
@@ -149,6 +156,7 @@ function getCards() {
         cardsSection.append(cardItem)
       })
     })
+    .catch(handleCatch)
 }
 getCards()
 //функция вывода карточек на страничку
@@ -163,7 +171,7 @@ formProfileElement.addEventListener('submit', submitEditForm);
 popupProfileAddButton.addEventListener('click', () => openModal(popupAdd));
 popupAddForm.addEventListener('submit', submitAddForm);
 
-pic.addEventListener('click', () => {
+profilePic.addEventListener('click', () => {
   openModal(popupAvatar)
 })
 

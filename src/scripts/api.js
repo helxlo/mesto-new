@@ -13,16 +13,11 @@ const handleThen = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`)
 }
 
-const handleCatch = (err) => {
-  console.log(err)
-}
-
 const getProfileInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 const getInitialCards = () => {
@@ -30,7 +25,6 @@ const getInitialCards = () => {
     headers: config.headers
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 function patchProfileInfo(name, about) {
@@ -46,7 +40,6 @@ function patchProfileInfo(name, about) {
       })
     })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 function postNewCard(name, link) {
@@ -59,7 +52,6 @@ function postNewCard(name, link) {
     })
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 const deleteCard = (id) => {
@@ -68,7 +60,6 @@ const deleteCard = (id) => {
     headers: config.headers
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 const putLikeOnCard = (id) => {
@@ -77,7 +68,6 @@ const putLikeOnCard = (id) => {
     headers: config.headers
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 const deleteLikeOnCard = (id) => {
@@ -86,7 +76,6 @@ const deleteLikeOnCard = (id) => {
     headers: config.headers
   })
     .then(handleThen)
-    .catch(handleCatch)
 }
 
 function patchProfileAvatar(avatar) {
@@ -98,7 +87,5 @@ function patchProfileAvatar(avatar) {
     })
   })
     .then(handleThen)
-    .catch(handleCatch)
-
 }
 export { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, putLikeOnCard, deleteLikeOnCard, deleteCard, patchProfileAvatar }
