@@ -1,7 +1,7 @@
-const showInputError = (form, input, config) => {
+const showInputError = (form, input, config, errorMessage) => {
     input.classList.add(config.inputErrorClass)
     const span = form.querySelector(`.${input.id}-error`)
-    span.textContent = input.dataset.errorMessage
+    span.textContent = errorMessage
     span.classList.add(config.errorClass)
 }
 
@@ -13,12 +13,21 @@ const hideInputError = (form, input, config) => {
 }
 
 const isValid = (form, input, config) => {
-    if (input.validity.patternMismatch) {
-        showInputError(form, input, config)
-    } else {
+    if (!input.validity.valid) {
+        showInputError(form, input, config, input.validationMessage)
+    }
+    else {
         hideInputError(form, input, config)
     }
+}
 
+const checkInputValidity = (input) => {
+    if (input.validity.patternMismatch) {
+        input.setCustomValidity(input.dataset.errorMessage)
+    }
+    else {
+        input.setCustomValidity("")
+    }
 }
 
 const hasInvalidValue = (inputs) => {
@@ -51,6 +60,7 @@ const setEventListeners = (form, config) => {
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             isValid(form, input, config)
+            checkInputValidity(input)
             toggleButtonState(inputs, button, config)
         })
     })
@@ -65,4 +75,13 @@ const enableValidation = (config) => {
     });
 };
 
-export { enableValidation }
+function clearValidation(form, config) {
+    const inputs = Array.from(form.querySelectorAll(config.inputSelector))
+    const button = form.querySelector(config.submitButtonSelector)
+    inputs.forEach((input) => {
+        hideInputError(form, input, config)
+        toggleButtonState(inputs, button, config)
+    })
+}
+
+export { enableValidation, clearValidation }

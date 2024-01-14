@@ -1,10 +1,10 @@
-import './index.css';
-import { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, patchProfileAvatar } from '../scripts/api.js'
-import { createCard } from '../scripts/card.js'
-import { openModal, closeModal } from '../scripts/modal.js'
-import { enableValidation } from '../scripts/validate.js'
+import '../pages/index.css';
+import { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, patchProfileAvatar } from './api.js'
+import { createCard } from './card.js'
+import { openModal, closeModal } from './modal.js'
+import { enableValidation, clearValidation } from './validate.js'
 
-const handleCatch = (err) => {
+export const handleCatch = (err) => {
   console.log(err)
 }
 
@@ -46,12 +46,19 @@ function openProfilePopup() {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 
+  clearValidation(formProfileElement, {
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__savebutton',
+    inactiveButtonClass: 'popup__savebutton_disabled',
+    inputErrorClass: 'popup__input_type_error',
+  })
+
   openModal(popupEdit)
 }
 //функция открытия попапа с редактированием
 
 function submitEditForm(evt) {
-  evt.preventDefault();
+  evt.preventDefault()
 
   renderLoading(true)
 
@@ -78,7 +85,7 @@ function submitAddForm(evt) {
 
   postNewCard(titleValue, linkValue)
     .then(item => {
-      const newCard = createCard(item.name, item.link, item.owner, item._id, item.likes);
+      const newCard = createCard(item);
       cardsSection.prepend(newCard);
       closeModal(popupAdd);
     })
@@ -148,11 +155,11 @@ getProfileData()
 
 function getCards() {
   Promise.all([getProfileData(), getInitialCards()])
- getInitialCards()
+  getInitialCards()
     .then((result) => {
       const arr = Array.from(result)
       arr.forEach((item) => {
-        const cardItem = createCard(item.name, item.link, item.owner, item._id, item.likes)
+        const cardItem = createCard(item)
         cardsSection.append(cardItem)
       })
     })
@@ -168,11 +175,25 @@ popupAvatarForm.addEventListener('submit', submitNewAvatar)
 popupProfileEditButton.addEventListener('click', openProfilePopup);
 formProfileElement.addEventListener('submit', submitEditForm);
 
-popupProfileAddButton.addEventListener('click', () => openModal(popupAdd));
+popupProfileAddButton.addEventListener('click', () => {
+  openModal(popupAdd)
+  clearValidation(popupAddForm, {
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__savebutton',
+    inactiveButtonClass: 'popup__savebutton_disabled',
+    inputErrorClass: 'popup__input_type_error',
+  })
+});
 popupAddForm.addEventListener('submit', submitAddForm);
 
 profilePic.addEventListener('click', () => {
   openModal(popupAvatar)
+  clearValidation(popupAvatarForm, {
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__savebutton',
+    inactiveButtonClass: 'popup__savebutton_disabled',
+    inputErrorClass: 'popup__input_type_error',
+  })
 })
 
 enableValidation({

@@ -39,7 +39,6 @@ function patchProfileInfo(name, about) {
         })
       })
     })
-    .then(handleThen)
 }
 
 function postNewCard(name, link) {
