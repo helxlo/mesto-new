@@ -1,19 +1,19 @@
-import { openModal, closeModal } from "./modal.js"
-import { popupFullScreen, subtitleFullScreen, picFullScreen, popupDeleteForm, handleCatch } from "./index.js";
-import { deleteCard, putLikeOnCard, deleteLikeOnCard } from "./api.js";
+import { openModal } from "./modal.js"
+import { popupDeleteForm, handleCatch, profileInfo } from "./index.js";
+import { putLikeOnCard, deleteLikeOnCard } from "./api.js";
 
-const popupAreYouSure = document.querySelector('.popup_type_areyousure')
+export const popupAreYouSure = document.querySelector('.popup_type_areyousure')
 
-function createCard(item) {
+function createCard(item, deleteCurrentCard, clickOnLike, openFullScreen) {
     const elementTemplate = document.querySelector('#element').content;
     const card = elementTemplate.querySelector('.element').cloneNode(true);
 
     const name = item.name
     const link = item.link
     const ownerId = item.owner._id
-    const userId = item._id
+    const cardId = item._id
     const likes = item.likes
-    const myId = 'ebd0e184bdeb8eaf75866e3f'
+    const myId = profileInfo.dataset.id
 
     card.querySelector('.element__title').textContent = name;
     const cardPic = card.querySelector('.element__pic')
@@ -32,57 +32,40 @@ function createCard(item) {
     }
 
     const likesNumber = card.querySelector('.element__counter')
-    like.addEventListener('click', () => clickOnLike(userId, like, likesNumber))
+    like.addEventListener('click', () => clickOnLike(cardId, like, likesNumber))
     likesNumber.textContent = likes.length
 
     const trash = card.querySelector('.element__trash');
 
     if (ownerId === myId) {
         trash.style.visibility = "visible";
-        trash.addEventListener('click', () => {
-            deleteCurrentCard(userId, card)
-        })
     }
+
+    trash.addEventListener('click', () =>
+        deleteCurrentCard(cardId, card)
+    )
 
     cardPic.addEventListener('click', () => openFullScreen(link, name));
 
     return card
 }
 
-function openFullScreen(link, name) {
-    openModal(popupFullScreen);
-    picFullScreen.src = link;
-    subtitleFullScreen.textContent = name
-    picFullScreen.alt = name
-}
-
-
-function deleteCurrentCard(id, card) {
+export const deleteCurrentCard = (id, card) => {
     openModal(popupAreYouSure)
     popupDeleteForm.dataset.id = id
-
-    popupDeleteForm.addEventListener('click', (evt) => {
-        evt.preventDefault()
-        deleteCard(id)
-            .then(() => {
-                card.remove()
-                closeModal(popupAreYouSure)
-            })
-            .catch(handleCatch)
-    })
-
+    card.dataset.id = id
 }
 
-function clickOnLike(userId, like, likesNumber) {
+export function clickOnLike(cardId, like, likesNumber) {
     if (like.classList.contains('element__like_active')) {
-        deleteLikeOnCard(userId)
+        deleteLikeOnCard(cardId)
             .then((card) => {
                 likesNumber.textContent = card.likes.length
                 like.classList.remove('element__like_active')
             })
             .catch(handleCatch)
     } else {
-        putLikeOnCard(userId)
+        putLikeOnCard(cardId)
             .then((card) => {
                 likesNumber.textContent = card.likes.length
                 like.classList.add('element__like_active')

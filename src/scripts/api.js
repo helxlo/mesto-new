@@ -28,17 +28,15 @@ const getInitialCards = () => {
 }
 
 function patchProfileInfo(name, about) {
-  return Promise.all([getProfileInfo, getInitialCards])
-    .then(() => {
-      fetch(`${config.baseUrl}/users/me`, {
-        method: 'PATCH',
-        headers: config.headers,
-        body: JSON.stringify({
-          name: name,
-          about: about,
-        })
-      })
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      about: about,
     })
+  })
+    .then(handleThen)
 }
 
 function postNewCard(name, link) {

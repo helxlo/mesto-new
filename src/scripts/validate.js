@@ -15,7 +15,7 @@ const hideInputError = (form, input, config) => {
 const isValid = (form, input, config) => {
     if (!input.validity.valid) {
         showInputError(form, input, config, input.validationMessage)
-    }
+    } 
     else {
         hideInputError(form, input, config)
     }
@@ -23,10 +23,10 @@ const isValid = (form, input, config) => {
 
 const checkInputValidity = (input) => {
     if (input.validity.patternMismatch) {
-        input.setCustomValidity(input.dataset.errorMessage)
+       input.setCustomValidity(input.dataset.errorMessage) 
     }
     else {
-        input.setCustomValidity("")
+       input.setCustomValidity("")
     }
 }
 
@@ -79,8 +79,8 @@ function clearValidation(form, config) {
     const inputs = Array.from(form.querySelectorAll(config.inputSelector))
     const button = form.querySelector(config.submitButtonSelector)
     inputs.forEach((input) => {
-        hideInputError(form, input, config)
-        toggleButtonState(inputs, button, config)
+      hideInputError(form, input, config)
+      toggleButtonState(inputs, button, config)
     })
 }
 
