@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { getProfileInfo, getInitialCards, patchProfileInfo, postNewCard, patchProfileAvatar, deleteCard } from './api.js'
 import { createCard, popupAreYouSure, deleteCurrentCard, clickOnLike } from './card.js'
 import { openModal, closeModal } from './modal.js'
-import { enableValidation, clearValidation } from './validate.js'
+import { enableValidation, clearValidation, config } from './validate.js'
 
 export const handleCatch = (err) => {
   console.log(err)
@@ -48,7 +48,7 @@ function openProfilePopup() {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 
-  clearValidation(formProfileElement, clearConfig)
+  clearValidation(formProfileElement, config)
 
   openModal(popupEdit)
 }
@@ -137,29 +137,24 @@ function renderLoading(isLoading, saveButton) {
 }
 //функция изменения надписи при загрузке
 
-export function getCards() {
-  Promise.all([
-    getProfileInfo()
-      .then((result) => {
-        profileName.textContent = result.name
-        profileDescription.textContent = result.about
-        picAvatar.style.background = `url(${result.avatar})`
-        profileInfo.dataset.id = result._id
-      })
-      .catch(handleCatch),
+Promise.all([
+  getProfileInfo(),
+  getInitialCards()
+])
+  .then(([profile, cards]) => {
+    profileName.textContent = profile.name
+    profileDescription.textContent = profile.about
+    picAvatar.style.background = `url(${profile.avatar})`
+    profileInfo.dataset.id = profile._id
 
-    getInitialCards()
-      .then((result) => {
-        const arr = Array.from(result)
-        arr.forEach((item) => {
-          const cardItem = createCard(item, deleteCurrentCard, clickOnLike, openFullScreen)
-          cardsSection.append(cardItem)
-        })
-      })
-      .catch(handleCatch)
-  ])
-}
-getCards()
+    const arr = Array.from(cards)
+    arr.forEach((item) => {
+      const cardItem = createCard(item, deleteCurrentCard, clickOnLike, openFullScreen)
+      cardsSection.append(cardItem)
+    })
+  })
+  .catch(handleCatch)
+
 //функция вывода карточек на страничку
 
 //функции --^
@@ -186,30 +181,24 @@ formProfileElement.addEventListener('submit', submitEditForm);
 
 popupProfileAddButton.addEventListener('click', () => {
   openModal(popupAdd)
-  clearValidation(popupAddForm, clearConfig)
+  clearValidation(popupAddForm, config)
 });
 popupAddForm.addEventListener('submit', submitAddForm);
 
 profilePic.addEventListener('click', () => {
   openModal(popupAvatar)
-  clearValidation(popupAvatarForm, clearConfig)
+  clearValidation(popupAvatarForm, config)
 })
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__savebutton',
-  inactiveButtonClass: 'popup__savebutton_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
+enableValidation(config);
 
+/*
 const clearConfig = {
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__savebutton',
   inactiveButtonClass: 'popup__savebutton_disabled',
   inputErrorClass: 'popup__input_type_error',
-}
+} */
 //обработчики событий ---^
 
 export const openFullScreen = (link, name) => {

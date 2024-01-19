@@ -1,3 +1,12 @@
+const config = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__savebutton',
+    inactiveButtonClass: 'popup__savebutton_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+}
+
 const showInputError = (form, input, config, errorMessage) => {
     input.classList.add(config.inputErrorClass)
     const span = form.querySelector(`.${input.id}-error`)
@@ -15,7 +24,7 @@ const hideInputError = (form, input, config) => {
 const isValid = (form, input, config) => {
     if (!input.validity.valid) {
         showInputError(form, input, config, input.validationMessage)
-    } 
+    }
     else {
         hideInputError(form, input, config)
     }
@@ -23,10 +32,10 @@ const isValid = (form, input, config) => {
 
 const checkInputValidity = (input) => {
     if (input.validity.patternMismatch) {
-       input.setCustomValidity(input.dataset.errorMessage) 
+        input.setCustomValidity(input.dataset.errorMessage)
     }
     else {
-       input.setCustomValidity("")
+        input.setCustomValidity("")
     }
 }
 
@@ -75,13 +84,13 @@ const enableValidation = (config) => {
     });
 };
 
-function clearValidation(form, config) {
+const clearValidation = (form, config) => {
     const inputs = Array.from(form.querySelectorAll(config.inputSelector))
     const button = form.querySelector(config.submitButtonSelector)
     inputs.forEach((input) => {
-      hideInputError(form, input, config)
-      toggleButtonState(inputs, button, config)
+        hideInputError(form, input, config)
+        toggleButtonState(inputs, button, config)
     })
 }
 
-export { enableValidation, clearValidation }
+export { enableValidation, clearValidation, config }
